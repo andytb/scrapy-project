@@ -1,5 +1,5 @@
 class DatabaseConfig:
-    DB_NAME = 'scrapping'
-    DB_USER = 'homestead'
-    DB_HOST = 'localhost'
-    DB_PASSWORD = 'secret'
+    DB_NAME = 'db_name'
+    DB_USER = 'db_user'
+    DB_HOST = 'db_localhost'
+    DB_PASSWORD = 'db_secret'
