@@ -18,6 +18,16 @@ sudo -u postgres psql
 ```sql
 GRANT ALL PRIVILEGES ON DATABASE db_name TO user_name;
 ```
+Create the table to store the program output.
+```sql
+CREATE TABLE output (
+    output_id serial PRIMARY KEY,
+    keyword varchar (100),
+    info text,
+    date date,
+    source varchar (500)
+);
+```
 
 ## To run
 To install the necessary packages, use `pip` and run:
@@ -28,8 +38,8 @@ pip install datetime
 pip install psycopg2
 ```
 
-### Run the spider
-To run the spider:
+### Run the program
+To run the program:
 ```sh
 scrapy crawl scrapping
 ```

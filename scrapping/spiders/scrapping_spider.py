@@ -13,7 +13,7 @@ class scrappingSpider(scrapy.Spider):
         conn = psycopg2.connect(conn_string)
         cur = conn.cursor()
         for keyword in config.Config.KEYWORDS_FILTER:
-            title = response.xpath('//body//*[not(self::script)]//text()//').re(r'.*' + keyword + '.*')
+            title = response.xpath('//body//*[not(self::script)]/text()').re(r'.*' + keyword + '.*')
             for item in title:
                 cur.execute("INSERT INTO output (keyword, info, date, source) VALUES (%s, %s, %s, %s)",
                 (keyword, item, date, response.request.url))
