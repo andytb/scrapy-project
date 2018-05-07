@@ -29,7 +29,7 @@ CREATE TABLE output (
 );
 ```
 
-## To run
+### Installing
 To install the necessary packages, use `pip` and run:
 
 ```sh
@@ -41,5 +41,8 @@ pip install psycopg2
 ### Run the program
 To run the program:
 ```sh
-scrapy crawl scrapping
+python script.py
 ```
+
+### Config files
+The database's and program's config files are located in the config folder.
