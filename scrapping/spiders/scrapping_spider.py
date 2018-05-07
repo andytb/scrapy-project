@@ -1,23 +1,26 @@
 import scrapy, psycopg2, datetime
-import config, database
+from urlparse import urlparse
 
 class scrappingSpider(scrapy.Spider):
     name = "scrapping"
-    start_urls = config.Config.URLS_TO_SCRAP
+
+    def __init__(self, **kw):
+        self.urls = kw.get('domains')
+        self.keywords = kw.get('keywords')
+        self.conn = kw.get('db')
+    
+    def start_requests(self):
+        for url in self.urls:
+            yield scrapy.Request(url=url, callback=self.parse)
+    
     def parse(self, response):
         date = datetime.datetime.now()
-        conn_string = "host='" + database.DatabaseConfig.DB_HOST + "' "
-        conn_string += "dbname='" + database.DatabaseConfig.DB_NAME + "' "
-        conn_string += "user='" + database.DatabaseConfig.DB_USER + "'"
-        conn_string += "password='" + database.DatabaseConfig.DB_PASSWORD + "'"
-        conn = psycopg2.connect(conn_string)
-        cur = conn.cursor()
-        for keyword in config.Config.KEYWORDS_FILTER:
+        cur = self.conn.cursor()
+        for keyword in self.keywords:
             title = response.xpath('//body//*[not(self::script)]/text()').re(r'.*' + keyword + '.*')
             for item in title:
                 cur.execute("INSERT INTO output (keyword, info, date, source) VALUES (%s, %s, %s, %s)",
                 (keyword, item, date, response.request.url))
 
-        conn.commit()
+        self.conn.commit()
         cur.close()
-        conn.close()
