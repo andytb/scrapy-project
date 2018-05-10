@@ -1,19 +1,20 @@
 import scrapy, psycopg2, datetime
-from urlparse import urlparse
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 
-class scrappingSpider(scrapy.Spider):
-    name = "scrapping"
+class wscrappingSpider(CrawlSpider):
+    name = "wscrapping"
 
     def __init__(self, **kw):
-        self.urls = kw.get('domains')
+        super(wscrappingSpider, self).__init__(self, **kw)
+        
+        self.allowed_domains = kw.get('allowed_domains')
+        self.start_urls = kw.get('start_urls')
         self.keywords = kw.get('keywords')
+        self.rules = kw.get('rules')
         self.conn = kw.get('db')
     
-    def start_requests(self):
-        for url in self.urls:
-            yield scrapy.Request(url=url, callback=self.parse)
-    
-    def parse(self, response):
+    def parse_item(self, response):
         date = datetime.datetime.now()
         cur = self.conn.cursor()
         for keyword in self.keywords:
