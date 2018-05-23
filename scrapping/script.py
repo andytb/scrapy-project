@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import scrapy, psycopg2, spiders.wscrapping_spider as mySpider
 import config.config as config, config.database as db
 from scrapy.crawler import CrawlerProcess
